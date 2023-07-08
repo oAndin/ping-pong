@@ -136,6 +136,9 @@ const ball = {
         this.x = field.w / 2;
         this.y = field.h / 2;
     },
+    _stopMove: function(){
+        this.speed = 0;
+    },
     _move: function(){
         this.x += this.directionX * this.speed;
         this.y += this.directionY * this.speed;
@@ -147,6 +150,9 @@ const ball = {
         canvasCtx.fill();
         this._calcPosition();
         this._move();
+        if (score.human == 10 || score.computer == 10 ){
+            ball._stopMove();
+        }
     }
 };
 
@@ -188,5 +194,5 @@ canvasEvent.addEventListener('mousemove', function(e) {
     mouse.x = e.pageX;
     mouse.y = e.pageY;
 })
-// window.setInterval(draw, 1000 / 60)
+
 
