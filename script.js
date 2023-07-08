@@ -150,8 +150,11 @@ const ball = {
         canvasCtx.fill();
         this._calcPosition();
         this._move();
-        if (score.human == 10 || score.computer == 10 ){
+        if (score.human == 10 || score.computer == 3 ){
             ball._stopMove();
+            if (window.confirm("Game Over!")){
+                
+            };
         }
     }
 };
