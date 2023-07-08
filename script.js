@@ -4,6 +4,11 @@ const canvasEvent = document.querySelector('canvas'),
     gapX = 10
     ;
 
+const mouse = {
+    x:0,
+    y:0,
+}
+
 const field = {
     w: window.innerWidth,
     h: window.innerHeight,
@@ -27,8 +32,12 @@ const leftPaddle = {
     y: 100,
     w: line.w,
     h: 200,
+    _move : function(){
+        this.y = mouse.y - this.h / 2;
+    },
     draw: function () {
         canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+        this._move();
     }
 };
 
@@ -37,8 +46,12 @@ const rightPaddle = {
     y: 100,
     w: line.w,
     h: 200,
+    _move : function(){
+        this.y = ball.y;
+    },
     draw: function () {
         canvasCtx.fillRect(this.x, this.y, this.w, this.h)
+        this._move();
     }
 };
 
@@ -85,11 +98,30 @@ function draw() {
     rightPaddle.draw();
     score.draw();
     ball.draw();
-    // canvas properties to draw the scoring
-   
 };
 
-window.setInterval(draw, 1000 / 60)
+window.animateFrame = (function() {
+    return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function (callback){
+        return window.setTimeout(callback, 1000 / 60)
+    }
+})();
+
+function main (){
+    animateFrame(main)
+    draw()
+}
 
 setUp();
-draw();
+main();
+
+canvasEvent.addEventListener('mousemove', function(e) {
+    mouse.x = e.pageX;
+    mouse.y = e.pageY;
+})
+// window.setInterval(draw, 1000 / 60)
+
