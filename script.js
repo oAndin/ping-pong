@@ -69,18 +69,37 @@ const score = {
 };
 
 const ball = {
-    x: 300,
-    y: 200,
+    x: 0,
+    y: 0,
     r: 20,
+    speed:5,
+    directionY: 1,
+    directionX: 1,
+    _calcPosition: function() {
+        if(
+            (this.y - this.r < 0 && this.directionY < 0)
+            ||
+            (this.y > field.h - this.r && this.directionY > 0)
+            ){
+            this._reverseY();
+        }
+    },
+    _reverseX: function(){
+        this.directionX *= -1;
+    },
+    _reverseY: function(){
+        this.directionY *= -1;
+    },
     _move: function(){
-        this.x += 1;
-        this.y += 1;
+        this.x += this.directionX * this.speed;
+        this.y += this.directionY * this.speed;
     },
     draw: function () {
         canvasCtx.fillStyle = '#ffffff';
         canvasCtx.beginPath()
         canvasCtx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
         canvasCtx.fill();
+        this._calcPosition();
         this._move();
     }
 };
