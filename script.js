@@ -46,8 +46,18 @@ const rightPaddle = {
     y: 100,
     w: line.w,
     h: 200,
+    speed: 5,
     _move : function(){
+        if(this.y + this.h / 2 < ball.y + ball.r){
+            this.y += this.speed;
+        }
+        else {
+            this.y -= this.speed;
+        }
         this.y = ball.y;
+    },
+    speedUp: function (){
+        this.speed += 1;
     },
     draw: function () {
         canvasCtx.fillRect(this.x, this.y, this.w, this.h)
@@ -78,7 +88,7 @@ const ball = {
     x: 100,
     y: 100,
     r: 20,
-    speed:5,
+    speed:6,
     directionY: 1,
     directionX: 1,
     _calcPosition: function() {
@@ -121,9 +131,10 @@ const ball = {
         this.speed +=3;
     },
     _pointUp: function(){
+        this._speedUp();
+        rightPaddle.speedUp();
         this.x = field.w / 2;
         this.y = field.h / 2;
-        this._speedUp();
     },
     _move: function(){
         this.x += this.directionX * this.speed;
